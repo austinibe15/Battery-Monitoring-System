@@ -1,0 +1,76 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Battery Monitoring Dashboard</title>  
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- CSS file -->  
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js CDN -->  
+</head>  
+<body>  
+    <header>  
+        <h1>Battery Monitoring Dashboard</h1>  
+    </header>  
+    
+    <main>  
+        <div class="data">  
+            {% if battery_data %}  
+                <h2>Latest Battery Data</h2>  
+                <ul>  
+                    <li><strong>Current:</strong> {{ battery_data['current'] }} A</li>  
+                    <li><strong>Voltage:</strong> {{ battery_data['voltage'] }} V</li>  
+                    <li><strong>Temperature:</strong> {{ battery_data['temperature'] }} °C</li>  
+                    <li><strong>State of Charge:</strong> {{ battery_data['soc'] }} %</li>  
+                    <li><strong>Timestamp:</strong> {{ battery_data['timestamp'] }}</li>  
+                </ul>  
+                <canvas id="socChart" width="400" height="200"></canvas> <!-- Canvas for Chart.js -->  
+            {% else %}  
+                <p>No battery data available.</p>  
+            {% endif %}  
+        </div>  
+    </main>  
+
+    <footer>  
+        <p>&copy; 2024 Austin Ibe Battery Monitoring System</p>  
+    </footer>  
+
+    <script>  
+        // Data for the chart (you will need to replace this with actual data)  
+        const labels = ['June', 'July', 'August', 'September', 'October', 'November', 'December' ];  
+        const socValues = [65, 70, 50, 75, 80, 60, 85];  
+
+        const ctx = document.getElementById('socChart').getContext('2d');  
+        const socChart = new Chart(ctx, {  
+            type: 'line', // Specify the chart type  
+            data: {  
+                labels: labels, // Data points on X-axis  
+                datasets: [{  
+                    label: 'State of Charge (%)',  
+                    data: socValues, // Data points on Y-axis  
+                    borderColor: 'rgba(75, 192, 192, 1)',  
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',  
+                    fill: true,  
+                }]  
+            },  
+            options: {  
+                responsive: true,  
+                scales: {  
+                    y: {  
+                        beginAtZero: true,  
+                        title: {  
+                            display: true,  
+                            text: 'SOC (%)'  
+                        }  
+                    },  
+                    x: {  
+                        title: {  
+                            display: true,  
+                            text: 'Months'  
+                        }  
+                    }  
+                }  
+            }  
+        });  
+    </script>  
+</body>  
+</html>
